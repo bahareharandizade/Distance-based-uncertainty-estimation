@@ -70,13 +70,14 @@ def mds_embedding(test_embedding):
   return test_embedding_transform
 
 
-df =read_data("/content/drive/MyDrive/phd_docs/baltimore_BLM_ALM.csv")
-model_transformer=sentiment_embedding_model()
-embeddings_transform = model_transformer.encode(sentences, show_progress_bar=True)
-sentiment_embedding=mds_embedding(embeddings_transform)
-df["X_0_fine_tune"] = sentiment_embedding.embedding_[:,0]
-df["X_1_fine_tune"] = sentiment_embedding.embedding_[:,1]
+if __name__=="__main__":
+  df =read_data("/content/drive/MyDrive/phd_docs/baltimore_BLM_ALM.csv")
+  model_transformer=sentiment_embedding_model()
+  embeddings_transform = model_transformer.encode(sentences, show_progress_bar=True)
+  sentiment_embedding=mds_embedding(embeddings_transform)
+  df["X_0_fine_tune"] = sentiment_embedding.embedding_[:,0]
+  df["X_1_fine_tune"] = sentiment_embedding.embedding_[:,1]
 
-fig = px.scatter(df, x="X_0_fine_tune", y="X_1_fine_tune", color="MV", opacity=0.8,hover_data=["prep_text","MV_count"])
-fig.show()
-fig.write_image("MV_coloring_fine_tune.pdf")
+  fig = px.scatter(df, x="X_0_fine_tune", y="X_1_fine_tune", color="MV", opacity=0.8,hover_data=["prep_text","MV_count"])
+  fig.show()
+  fig.write_image("MV_coloring_fine_tune.pdf")
