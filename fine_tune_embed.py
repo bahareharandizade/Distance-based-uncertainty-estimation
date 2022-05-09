@@ -85,22 +85,24 @@ def infer_bert_model(testing_loader, model):
 
 
 
-model_path ="/content/drive/MyDrive/phd_docs/twitter_mul_lab_finetuned.model"
-model,tokenizer = read_model(model_path)
-test_set = handle_tokenize(df["prep_text"].to_list(),tokenizer)
+if __name__=="__main__":
+  
+  model_path ="/content/drive/MyDrive/phd_docs/twitter_mul_lab_finetuned.model"
+  model,tokenizer = read_model(model_path)
+  test_set = handle_tokenize(df["prep_text"].to_list(),tokenizer)
 
-VALID_BATCH_SIZE = 50
-testing_loader = DataLoader(test_set, batch_size=VALID_BATCH_SIZE, shuffle=False, num_workers=4)
-test_embeddings=infer_bert_model(testing_loader, model)
+  VALID_BATCH_SIZE = 50
+  testing_loader = DataLoader(test_set, batch_size=VALID_BATCH_SIZE, shuffle=False, num_workers=4)
+  test_embeddings=infer_bert_model(testing_loader, model)
 
 
-fine_tune_embedding=mds_embedding(test_embeddings)
-df["X_0_fine_tune"] = fine_tune_embedding.embedding_[:,0]
-df["X_1_fine_tune"] = fine_tune_embedding.embedding_[:,1]
+  fine_tune_embedding=mds_embedding(test_embeddings)
+  df["X_0_fine_tune"] = fine_tune_embedding.embedding_[:,0]
+  df["X_1_fine_tune"] = fine_tune_embedding.embedding_[:,1]
 
-fig = px.scatter(df, x="X_0_fine_tune", y="X_1_fine_tune", color="MV", opacity=0.8,hover_data=["prep_text","MV_count"])
-fig.show()
-fig.write_image("MV_coloring_fine_tune.pdf")
+  fig = px.scatter(df, x="X_0_fine_tune", y="X_1_fine_tune", color="MV", opacity=0.8,hover_data=["prep_text","MV_count"])
+  fig.show()
+  fig.write_image("MV_coloring_fine_tune.pdf")
         
         
   
